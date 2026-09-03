@@ -38,10 +38,12 @@ __pycache__/
 또한 예외 traceback에 토큰이 들어가는 일이 없도록, `bot.run(os.environ["DISCORD_TOKEN"])`만 사용하고 토큰을 변수로 보관하지 않음.
 
 ### 4. 슬래시 명령어 권한
-- `/목소리` → `manage_channels=True` 권한 필요
-- 데코레이터 `@app_commands.checks.has_permissions(manage_channels=True)`
-- 권한 부족 시 `MissingPermissions` → 한국어 안내
-- 발음 사전은 관리자 대시보드에서만 편집한다 (Discord `administrator` 권한을 요청마다 재확인)
+- `/목소리` → 권한 게이트 없음. 서버 목소리 선택은 시크릿을 노출하지도, 되돌릴 수
+  없는 변경을 만들지도 않으므로 일반 사용자도 바꿀 수 있다. 서버가 제한하고 싶으면
+  Discord 통합 설정(서버 설정 → 연동 → 코아)에서 명령별 권한을 잠근다
+- 봇 코드가 권한을 요구하는 경로는 관리자 전용 기능뿐이다: `/관리자` 와 웹 대시보드
+  (Discord `administrator` 권한을 요청마다 재확인)
+- 발음 사전은 관리자 대시보드에서만 편집한다
 
 ### 5. config.json 보호
 - PII(이메일, 실명) 저장 금지. 채널 ID·voice 식별자만.

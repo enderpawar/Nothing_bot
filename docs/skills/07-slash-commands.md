@@ -7,7 +7,7 @@
 
 | 명령어 | 권한 | 파라미터 | 동작 |
 |--------|------|---------|------|
-| `/목소리` | Manage Channels | `종류: Choice[str]` | TTS 보이스 변경 (한국어 10개 선택지) |
+| `/목소리` | 일반 | `종류: Choice[str]` | TTS 보이스 변경 (한국어 10개 선택지) |
 | `/입장` | 일반 | – | 사용자가 참여 중인 음성 채널로 입장하고 그 채널 채팅을 TTS 입력으로 자동 설정 |
 | `/퇴장` | 일반 | – | 음성 채널에서 퇴장 |
 | `/상태` | 일반 | – | 현재 설정(채널, voice, 발음 사전 규칙 수) 확인 |
@@ -88,8 +88,10 @@ class TTSCog(commands.Cog):
 ```
 
 ## 권한 처리
-- `app_commands.checks.has_permissions(manage_channels=True)` 데코레이터로 강제
-- 권한 부족 시 `app_commands.errors.MissingPermissions` → on_app_command_error에서 한국어 안내
+- TTS 명령 4개 모두 권한 게이트 없음 — 누구나 실행한다. 제한이 필요한 서버는
+  Discord 통합 설정에서 명령별 권한을 잠그면 Discord 가 클라이언트에서 막는다
+- `cog_app_command_error` 는 남은 예외를 `log.exception` 으로 잡고 사용자에겐
+  ephemeral 한국어 안내만 보낸다
 
 ## Sync 정책
 - `setup_hook`에서 `await bot.tree.sync()` 한 번만

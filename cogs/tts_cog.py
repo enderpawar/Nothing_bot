@@ -13,7 +13,8 @@
 Rule 01 (봇 루프 방지): on_message / on_voice_state_update 첫 줄에 봇 가드.
 Rule 02 (guild 격리): 모든 처리는 interaction.guild_id / message.guild.id 기준.
 Rule 03 (복원력): 핸들러는 `log.exception` 으로 잡고 사용자에겐 무응답 또는 ephemeral 안내.
-Rule 04 (시크릿/권한): 민감 명령(목소리)에 manage_channels 권한 체크.
+Rule 04 (시크릿/권한): `/목소리` 는 서버 설정만 바꾸고 시크릿을 노출하지 않으므로
+권한 게이트 없이 누구나 실행한다. 관리자 전용 경로는 `/관리자` 와 웹 대시보드다.
 """
 from __future__ import annotations
 
@@ -530,7 +531,6 @@ class TTSCog(commands.Cog):
     @app_commands.rename(voice="종류")
     @app_commands.describe(voice="사용할 한국어 TTS 목소리")
     @app_commands.choices(voice=VOICE_CHOICES)
-    @app_commands.checks.has_permissions(manage_channels=True)
     async def setvoice(
         self, interaction: discord.Interaction, voice: app_commands.Choice[str]
     ) -> None:
@@ -675,11 +675,13 @@ class TTSCog(commands.Cog):
     async def cog_app_command_error(
         self, interaction: discord.Interaction, error: app_commands.AppCommandError
     ) -> None:
+        # 이 cog 의 명령에는 권한 게이트가 없다. 서버가 Discord 통합 설정으로
+        # 명령을 잠그면 Discord 가 클라이언트에서 막으므로 여기까지 오지 않는다.
         if isinstance(error, app_commands.MissingPermissions):
             await self._safe_send(
                 interaction,
                 "권한 필요",
-                "이 명령은 `채널 관리` 권한이 필요합니다.",
+                "이 명령을 실행할 권한이 없습니다.",
                 ephemeral=True,
                 tone="error",
             )

@@ -63,7 +63,7 @@
 | 적용 Skill | [`07-slash-commands`](skills/07-slash-commands.md) |
 | 적용 Rule | [`04-secrets-and-security`](rules/04-secrets-and-security.md), [`02-guild-isolation`](rules/02-guild-isolation.md) |
 | 산출물 | `cogs/tts_cog.py` (명령어 부분) |
-| 핵심 작업 | `/목소리`, `/입장`, `/퇴장`, `/상태`. `Manage Channels` 권한 체크. 읽을 채널은 `/입장`이 정하므로 채널 선택 명령을 두지 않는다 |
+| 핵심 작업 | `/목소리`, `/입장`, `/퇴장`, `/상태`. 네 명령 모두 권한 게이트 없이 누구나 실행. 읽을 채널은 `/입장`이 정하므로 채널 선택 명령을 두지 않는다 |
 | 검증 | 테스트 서버에서 각 명령어 실행 → 응답·설정 반영 확인 |
 
 ## Phase 7 — Event Handlers
